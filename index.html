@@ -1,0 +1,178 @@
+<!-- GET TO WORK JAJAJAJAJA -->
+
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rapid Serial Visual Presentation</title>
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        text-align: center;
+        background-color: #121212;
+        color: white;
+      }
+      #wordDisplay {
+        font-size: 4rem;
+        font-weight: bold;
+        margin: 15vh 0;
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      #progressBar {
+        height: 6px;
+        background-color: #ff4d4d;
+        width: 0%;
+        transition: width 0.1s linear;
+      }
+      textarea {
+        width: 80%;
+        height: 150px;
+        border-radius: 10px;
+        padding: 10px;
+        background: #222;
+        color: #fff;
+        border: 1px solid #444;
+      }
+      #speedDisplay {
+        font-family: monospace;
+        color: #888;
+        margin-top: 10px;
+      }
+      .red {
+        color: #ff4d4d;
+      }
+      .hidden {
+        display: none;
+      }
+      #submitBtn {
+        margin-top: 20px;
+        margin-bottom: 50px;
+        padding: 10px 20px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        background-color: #ff4d4d;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+      }
+      #submitBtn:hover {
+            background-color: #ff1a1a;
+     }
+     #expand {
+        margin-left: 10px;
+        padding: 10px 15px;
+        font-size: 0.5rem;
+        font-weight: bold;
+        background-color: #444;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+      }
+      #expand:hover {
+            background-color: #666;
+     }
+
+    </style>
+  </head>
+
+  <body>
+    <h1>Read thing go fast</h1>
+    <div id="inputText">
+      <!-- Make this div shrink after submitting to leave room for the rsvp -->
+      <p>Insert the text you want to read here</p>
+      <textarea id="textToRead"></textarea></div>
+      <button id="submitBtn">Help me read this</button>
+      <button id="expand">V</button>
+    </div>
+    
+    <div id="rsvpBox">
+      <div id="progressBar"></div>
+
+      <div id="wordDisplay"></div>
+
+      <div id="speed"></div>
+    </div>
+
+    <script>
+      let text = document.getElementById('textToRead');
+      let submit = document.getElementById('submitBtn');
+      let inputText = document.getElementById('inputText');
+      let expand = document.getElementById('expand');
+      let rsvpBox = document.getElementById('rsvpBox');
+      let readSpeed = 1000;
+
+      //on submit
+      submit.addEventListener('click', function () {
+        let words = text.value.split(' ');
+        let toread = words.map(highlightMiddle);
+        inputText.style.display = 'none';
+        rsvpBox.style.display = 'block';
+
+        displayWords(toread);
+      });
+      //expand/close the input box
+      expand.addEventListener('click', function () {
+        if (inputText.style.display === 'none') {
+          inputText.style.display = 'block';
+          expand.textContent = '^';
+        } else {
+          inputText.style.display = 'none';
+          expand.textContent = 'V';
+        }
+      });
+
+      //turn the middle letter of a word red
+      function highlightMiddle(word) {
+        if (word.length > 2) {
+          let middleIndex = Math.floor(word.length / 2);
+          let highlighted =
+            word.substring(0, middleIndex) +
+            "<span style='color: red;'>" +
+            word[middleIndex] +
+            '</span>' +
+            word.substring(middleIndex + 1);
+          return highlighted;
+        }
+        return word;
+      }
+
+      //display the words one by one, ADD ACCELERATION
+      function displayWords(words) {
+        let index = 0;
+        let currentSpeed = 500; //starting speed
+        const minSpeed = 150; // maximum speed limit
+        const acceleration = 10; // acceleration in ms per word
+
+        function showNextWord() {
+          if (index < words.length) {
+            // display the current word
+            document.getElementById('wordDisplay').innerHTML = words[index];
+
+            // update the progress bar
+            let progress = ((index + 1) / words.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+
+            index++;
+
+            // accelerate the speed for the next word
+            currentSpeed = Math.max(minSpeed, currentSpeed - acceleration);
+
+            //use setTimeout to create a shortening delay up to a certain speed
+            setTimeout(showNextWord, currentSpeed);
+          } else {
+            // show message when done
+            document.getElementById('wordDisplay').innerHTML = 'DONE!';
+          }
+        }
+
+        showNextWord();
+      }
+    </script>
+  </body>
+</html>
