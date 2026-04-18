@@ -6,6 +6,15 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Rapid Serial Visual Presentation</title>
+        <style>
+        body { font-family: 'Inter', sans-serif; text-align: center; background-color: #121212; color: white; }
+        #wordDisplay { font-size: 4rem; font-weight: bold; margin: 15vh 0; height: 100px; display: flex; justify-content: center; align-items: center; }
+        #progressBar { height: 6px; background-color: #ff4d4d; width: 0%; transition: width 0.1s linear; }
+        textarea { width: 80%; height: 150px; border-radius: 10px; padding: 10px; background: #222; color: #fff; border: 1px solid #444; }
+        #speedDisplay { font-family: monospace; color: #888; margin-top: 10px; }
+        .red { color: #ff4d4d; }
+        .hidden { display: none; }
+        </style>
     </head>
 
 
