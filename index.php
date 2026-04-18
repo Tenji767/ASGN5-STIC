@@ -75,9 +75,33 @@ function highlightMiddle(word) {
 //display the words one by one, ADD ACCELERATION
 function displayWords(words) {
     let index= 0;
+    let currentSpeed = 500; //starting speed
+    const minSpeed = 150; // maximum speed limit
+    const acceleration = 10; // acceleration in ms per word
 
-    setTimeout()//use setTimeout to create a shortening delay up to a certain speed
+    function showNextWord() {
+        if (index < words.length) {
+            // display the current word
+            document.getElementById("wordDisplay").innerHTML = words[index];
+            
+            // update the progress bar
+            let progress = ((index + 1) / words.length) * 100;
+            document.getElementById("progressBar").style.width = progress + "%";
+            
+            index++;
 
+            // accelerate the speed for the next word
+            currentSpeed = Math.max(minSpeed, currentSpeed - acceleration);
+            
+            //use setTimeout to create a shortening delay up to a certain speed
+            setTimeout(showNextWord, currentSpeed);
+        } else {
+            // show message when done
+            document.getElementById("wordDisplay").innerHTML = "DONE!";
+        }
+    }
+
+    showNextWord();
 
 }
 
